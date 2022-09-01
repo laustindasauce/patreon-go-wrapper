@@ -1,5 +1,4 @@
 [![GoDoc](https://godoc.org/github.com/mxpv/patreon-go?status.svg)](https://godoc.org/github.com/austinbspencer/patreon-go-wrapper/)
-
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Patreon](https://img.shields.io/badge/support-patreon-E6461A.svg)](https://www.patreon.com/austinhub)
 
@@ -11,7 +10,7 @@
 
 ## How to import
 
-The `patreon-go` package may be installed by running:
+The `patreon-go-wrapper` package may be installed by running:
 
 ```
 go get github.com/austinbspencer/patreon-go-wrapper
@@ -26,14 +25,18 @@ import "github.com/austinbspencer/patreon-go-wrapper"
 ## Basic example
 
 ```go
-import "github.com/austinbspencer/patreon-go-wrapper"
+import (
+	"fmt"
+
+	"github.com/austinbspencer/patreon-go-wrapper"
+)
 
 func main() {
 	client := patreon.NewClient(nil)
 
 	user, err := client.FetchIdentity()
 	if err != nil {
-		// ...
+		// handle the error
 	}
 
 	fmt.Println(user.Data.Id)
@@ -48,7 +51,7 @@ Here is an example with static token:
 
 ```go
 import (
-	"gopkg.in/mxpv/patreon-go.v1"
+	"github.com/austinbspencer/patreon-go-wrapper"
 	"golang.org/x/oauth2"
 )
 
@@ -87,7 +90,7 @@ func NewPatreonClient() (*patreon.Client, error) {
 	tc := config.Client(context.Background(), &token)
 
 	client := NewClient(tc)
-	_, err := client.FetchUser()
+	_, err := client.FetchIdentity()
 
 	return client, err
 }
