@@ -14,19 +14,19 @@
 The `patreon-go` package may be installed by running:
 
 ```
-go get github.com/battle-of-the-states/patreon-go-wrapper
+go get github.com/austinbspencer/patreon-go-wrapper
 ```
 
 or
 
 ```
-import "github.com/battle-of-the-states/patreon-go-wrapper"
+import "github.com/austinbspencer/patreon-go-wrapper"
 ```
 
 ## Basic example
 
 ```go
-import "github.com/battle-of-the-states/patreon-go-wrapper"
+import "github.com/austinbspencer/patreon-go-wrapper"
 
 func main() {
 	client := patreon.NewClient(nil)
