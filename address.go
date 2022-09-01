@@ -1,10 +1,7 @@
 package patreon
 
 // AddressAttributes is all fields in the Address Attributes struct
-var AddressAttributes = []string{
-	"Addressee", "City", "Country", "CreatedAt", "Line1",
-	"Line2", "PhoneNumber", "PostalCode", "State",
-}
+var AddressAttributes = getObjectFields(Address{}.Attributes)
 
 // Address represents a Patreon's shipping address.
 type Address struct {

@@ -4,12 +4,7 @@ package patreon
 const UserDefaultIncludes = "campaign,memberships"
 
 // UserAttributes is all fields in the User Attributes struct
-var UserAttributes = []string{
-	"About", "CanSeeNSFW", "Created", "Email", "FirstName",
-	"FullName", "HidePledges", "ImageURL", "IsEmailVerified",
-	"LastName", "LikeCount", "SocialConnections", "ThumbURL",
-	"URL", "Vanity",
-}
+var UserAttributes = getObjectFields(User{}.Attributes)
 
 // User is the Patreon user, which can be both patron and creator.
 type User struct {

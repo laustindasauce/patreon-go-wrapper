@@ -1,11 +1,7 @@
 package patreon
 
 // PostAttributes is all fields in the Post Attributes struct
-var PostAttributes = []string{
-	"AppID", "AppStatus", "Content", "EmbedData",
-	"EmbedURL", "IsPaid", "IsPublic", "PublishedAt",
-	"Title", "URL",
-}
+var PostAttributes = getObjectFields(Post{}.Attributes)
 
 // Post is content posted by a creator on a campaign page.
 type Post struct {

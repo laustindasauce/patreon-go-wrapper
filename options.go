@@ -2,6 +2,8 @@ package patreon
 
 import (
 	"net/url"
+	"reflect"
+	"regexp"
 	"strings"
 )
 
@@ -57,4 +59,27 @@ func getOptions(opts ...requestOption) options {
 	}
 
 	return cfg
+}
+
+// getObjectFields will get all fields for an object
+func getObjectFields(i interface{}) []string {
+	v := reflect.ValueOf(i)
+	typeOfS := v.Type()
+
+	var fields []string
+
+	for i := 0; i < v.NumField(); i++ {
+		fields = append(fields, toSnakeCase(typeOfS.Field(i).Name))
+	}
+
+	return fields
+}
+
+var matchFirstCap = regexp.MustCompile("(.)([A-Z][a-z]+)")
+var matchAllCap = regexp.MustCompile("([a-z0-9])([A-Z])")
+
+func toSnakeCase(str string) string {
+	snake := matchFirstCap.ReplaceAllString(str, "${1}_${2}")
+	snake = matchAllCap.ReplaceAllString(snake, "${1}_${2}")
+	return strings.ToLower(snake)
 }

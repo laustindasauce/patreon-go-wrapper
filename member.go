@@ -5,12 +5,7 @@ var (
 	MemberDefaultIncludes = []string{"address", "campaign", "currently_entitled_tiers", "user"}
 
 	// MemberAttributes is all fields in the Member Attributes struct
-	MemberAttributes = []string{
-		"CampaignLifetimeSupportCents", "CurrentlyEntitledAmountCents",
-		"Email", "FullName", "IsFollower", "LastChargeDate",
-		"LastChargeStatus", "LifetimeSupportCents", "NextChargeDate", "Note",
-		"PatronStatus", "PledgeCadence", "PledgeRelationshipStart", "WillPayAmountCents",
-	}
+	MemberAttributes = getObjectFields(Member{}.Attributes)
 )
 
 // Member is the record of a user's membership to a campaign.

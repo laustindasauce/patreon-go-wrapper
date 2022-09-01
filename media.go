@@ -1,12 +1,7 @@
 package patreon
 
 // MediaAttributes is all fields in the Media Attributes struct
-var MediaAttributes = []string{
-	"CreatedAt", "DownloadURL", "FileName", "ImageURLs",
-	"Metadata", "Mimetype", "OwnerID", "OwnerRelationship",
-	"OwnerType", "SizeBytes", "State", "UploadExpiresAt",
-	"UploadParameters", "UploadUrl",
-}
+var MediaAttributes = getObjectFields(Media{}.Attributes)
 
 // Media is a file uploaded to patreon.com, usually an image.
 type Media struct {
