@@ -1,10 +1,7 @@
 package patreon
 
 // GoalAttributes is all fields in the Goal Attributes struct
-var GoalAttributes = []string{
-	"AmountCents", "CompletedPercentage", "CreatedAt",
-	"Description", "ReachedAt", "Title",
-}
+var GoalAttributes = getObjectFields(Goal{}.Attributes)
 
 // Goal is the funding goal in USD set by a creator on a campaign.
 type Goal struct {

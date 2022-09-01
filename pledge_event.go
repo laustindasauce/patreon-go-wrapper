@@ -1,10 +1,7 @@
 package patreon
 
 // PledgeEventAttributes is all fields in the PledgeEvent Attributes struct
-var PledgeEventAttributes = []string{
-	"AmountCents", "CurrencyCode", "Date", "PaymentStatus",
-	"TierID", "TierTitle", "Type",
-}
+var PledgeEventAttributes = getObjectFields(PledgeEvent{}.Attributes)
 
 // PledgeEvent is the record of a pledging action taken by the user, or that action's failure.
 type PledgeEvent struct {

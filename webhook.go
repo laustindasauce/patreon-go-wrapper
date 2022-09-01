@@ -39,10 +39,7 @@ func VerifySignature(message []byte, secret string, signature string) (bool, err
 }
 
 // WebhookAttributes is all fields in the Webhook Attributes struct
-var WebhookAttributes = []string{
-	"LastAttemptedAt", "NumConsecutiveTimesFailed", "Paused",
-	"Secret", "Triggers", "URI",
-}
+var WebhookAttributes = getObjectFields(Webhook{}.Attributes)
 
 // Webhook is fired based on events happening on a particular campaign.
 type Webhook struct {

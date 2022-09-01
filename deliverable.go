@@ -1,7 +1,7 @@
 package patreon
 
 // DeliverableAttributes is all fields in the Deliverable Attributes struct
-var DeliverableAttributes = []string{"completed_at", "delivery_status", "due_at"}
+var DeliverableAttributes = getObjectFields(Deliverable{}.Attributes)
 
 // Deliverable is the record of whether or not a patron has been delivered the
 // benefit they are owed because of their member tier.

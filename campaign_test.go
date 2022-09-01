@@ -32,8 +32,6 @@ func TestFetchCampaign(t *testing.T) {
 	attrs := resp.Data[0].Attributes
 	require.NotEmpty(t, attrs.ImageSmallURL)
 	require.NotEmpty(t, attrs.ImageURL)
-	// require.True(t, attrs.IsChargedImmediately)
-	// require.True(t, attrs.IsMonthly)
 	require.False(t, attrs.IsNsfw)
 	require.Equal(t, 123121, attrs.PatronCount)
 	require.Equal(t, "month", attrs.PayPerName)

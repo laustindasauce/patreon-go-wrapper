@@ -1,13 +1,7 @@
 package patreon
 
 // BenefitAttributes is all fields in the Benefit Attributes struct
-var BenefitAttributes = []string{
-	"AppExternalID", "AppMeta", "BenefitType", "CreatedAt",
-	"DeliverablesDueTodayCount", "DeliveredDeliverablesCount",
-	"Description", "IsDeleted", "IsEnded", "IsPublished",
-	"NextDeliverableDueDate", "NotDeliveredDeliverablesCount",
-	"RuleType", "TiersCount", "Title",
-}
+var BenefitAttributes = getObjectFields(Benefit{}.Attributes)
 
 // Benefit is a benefit added to the campaign, which can be added to a tier to be delivered to the patron.
 type Benefit struct {

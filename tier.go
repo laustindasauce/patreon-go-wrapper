@@ -1,12 +1,7 @@
 package patreon
 
 // TierAttributes is all fields in the Tier Attributes struct
-var TierAttributes = []string{
-	"AmountCents", "CreatedAt", "Description", "DiscordRoleIDs",
-	"EditedAt", "ImageURL", "PatronCount", "PostCount", "Published",
-	"PublishedAt", "Remaining", "RequiresShipping", "Title",
-	"UnpublishedAt", "URL", "UserLimit",
-}
+var TierAttributes = getObjectFields(Tier{}.Attributes)
 
 // Tier is a membership level on a campaign, which can have benefits attached to it.
 type Tier struct {

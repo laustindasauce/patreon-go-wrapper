@@ -4,14 +4,7 @@ var (
 	// CampaignDefaultIncludes specifies default includes for Campaign.
 	CampaignDefaultIncludes = []string{"tiers", "creator", "benefits", "goals"}
 	// CampaignAttributes is all fields in the Campaign Attributes struct
-	CampaignAttributes = []string{
-		"CreatedAt", "CreationName", "DiscordServerID", "GoogleAnalyticsID",
-		"HasRSS", "HasSentRSSNotify", "ImageSmallURL", "ImageURL",
-		"IsChargedImmediately", "IsMonthly", "IsNsfw", "MainVideoEmbed",
-		"MainVideoURL", "OneLiner", "PatronCount", "PayPerName", "PledgeURL",
-		"PublishedAt", "ResArtworkURL", "RSSFeedTitle", "ShowEarnings", "Summary",
-		"ThanksEmbed", "ThanksMsg", "ThanksVideoURL", "URL", "Vanity",
-	}
+	CampaignAttributes = getObjectFields(Campaign{}.Attributes)
 )
 
 // Campaign is the creator's page, and the top-level object for accessing lists of members, tiers, etc.
@@ -37,7 +30,7 @@ type Campaign struct {
 		PayPerName           string   `json:"pay_per_name"`
 		PledgeURL            string   `json:"pledge_url"`
 		PublishedAt          NullTime `json:"published_at"`
-		ResArtworkURL        bool     `json:"res_artwork_url"`
+		RSSArtworkURL        bool     `json:"rss_artwork_url"`
 		RSSFeedTitle         string   `json:"rss_feed_title"`
 		ShowEarnings         bool     `json:"show_earnings"`
 		Summary              string   `json:"summary"`
