@@ -16,11 +16,17 @@ const (
 	// AccessTokenURL specifies Patreon's OAuth2 token endpoint (see https://tools.ietf.org/html/rfc6749#section-3.2).
 	// See Example_refreshToken for examples.
 	AccessTokenURL = "https://api.patreon.com/oauth2/token"
+
+	// baseURL is the base url for api V2 (see https://docs.patreon.com/#apiv2-resource-endpoints).
+	baseURL = "https://patreon.com"
 )
 
-const (
-	baseURL = "https://api.patreon.com"
-)
+// AllScopes is every scope possible for Oauth (see https://docs.patreon.com/#scopes).
+var AllScopes = []string{
+	"identity", "identity[email]", "identity.memberships", "campaigns",
+	"w:campaigns.webhook", "campaigns.members", "campaigns.members[email]",
+	"campaigns.members.address", "campaigns.posts",
+}
 
 // Client manages communication with Patreon API.
 type Client struct {
@@ -99,6 +105,15 @@ func (c *Client) FetchCampaignPosts(campaignID string, opts ...requestOption) (*
 func (c *Client) FetchCampaignPost(postID string, opts ...requestOption) (*PostResponse, error) {
 	resp := &PostResponse{}
 	err := c.get(fmt.Sprintf("/api/oauth2/v2/posts/%s", postID), resp, opts...)
+	return resp, err
+}
+
+// FetchCampaignWebhooks gets the Webhooks for the current user's Campaign created by the API client.
+// You will only be able to see webhooks created by your client.
+// Requires the w:campaigns.webhook scope.
+func (c *Client) FetchCampaignWebhooks(opts ...requestOption) (*WebhookResponse, error) {
+	resp := &WebhookResponse{}
+	err := c.get("/api/oauth2/v2/webhoooks", resp, opts...)
 	return resp, err
 }
 
