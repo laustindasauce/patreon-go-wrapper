@@ -77,7 +77,7 @@ func NewPatreonClient() (*patreon.Client, error) {
 			AuthURL:  AuthorizationURL,
 			TokenURL: AccessTokenURL,
 		},
-		Scopes: []string{"campaigns.members", "campaigns.members[email]", "campaigns.members.address", "campaigns", "identity.memberships", "identity", "identity[email]"},
+		Scopes: patreon.AllScopes,
 	}
 
 	token := oauth2.Token{
@@ -96,23 +96,36 @@ func NewPatreonClient() (*patreon.Client, error) {
 }
 ```
 
-## Look & Feel
+## Real Example
 
 ```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	"time"
+
+	"github.com/austinbspencer/patreon-go-wrapper"
+	_ "github.com/joho/godotenv/autoload"
+	"golang.org/x/oauth2"
+)
+
 func main() {
 	patreonConfig := oauth2.Config{
-		ClientID:     config("PATREON_CLIENT_ID"),
-		ClientSecret: config("PATREON_CLIENT_SECRET"),
+		ClientID:     os.Getenv("PATREON_CLIENT_ID"),
+		ClientSecret: os.Getenv("PATREON_CLIENT_SECRET"),
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  patreon.AuthorizationURL,
 			TokenURL: patreon.AccessTokenURL,
 		},
-		Scopes: []string{"campaigns.members", "campaigns.members[email]", "campaigns.members.address", "campaigns", "identity.memberships", "identity", "identity[email]"},
+		Scopes: patreon.AllScopes,
 	}
 
 	token := oauth2.Token{
-		AccessToken:  config("PATREON_ACCESS_TOKEN"),
-		RefreshToken: config("PATREON_REFRESH_TOKEN"),
+		AccessToken:  os.Getenv("PATREON_ACCESS_TOKEN"),
+		RefreshToken: os.Getenv("PATREON_REFRESH_TOKEN"),
 		// Must be non-nil, otherwise token will not be expired
 		Expiry: time.Now().Add(2 * time.Hour),
 	}
@@ -121,14 +134,22 @@ func main() {
 
 	client := patreon.NewClient(tc)
 
-	fieldOpts := patreon.WithFields()
-	includeOpts := patreon.WithIncludes("campaign", "memberships")
+	fieldOpts := patreon.WithFields("user", patreon.UserFields...)
+	campOpts := patreon.WithFields("campaign", patreon.CampaignFields...)
+	includeOpts := patreon.WithIncludes("campaign")
 
-	user, err := client.FetchIdentity(fieldOpts, includeOpts)
+	user, err := client.FetchIdentity(fieldOpts, campOpts, includeOpts)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(user.Data.ID)
+	for _, item := range user.Included.Items {
+		res, ok := item.(*patreon.Campaign)
+		if !ok {
+			fmt.Println("Not oke!")
+			continue
+		}
+		fmt.Println(res.Attributes.Summary)
+	}
 }
 ```
