@@ -39,14 +39,6 @@ func TestFetchVanity(t *testing.T) {
 	require.Equal(t, "https://c10.patreonusercontent.com/4/patreon-media/p/user/3232132131", attrs.ThumbURL)
 	require.Equal(t, "https://www.patreon.com/user?u=3232132131", attrs.URL)
 	require.Equal(t, "yurt", attrs.Vanity)
-
-	// Relationships
-
-	// pledges := resp.Data.Relationships.Pledges
-	// require.NotNil(t, pledges)
-	// require.Len(t, pledges.Data, 1)
-	// require.Equal(t, "2444714", pledges.Data[0].ID)
-	// require.Equal(t, "pledge", pledges.Data[0].Type)
 }
 
 const currentyVanityResp = `
