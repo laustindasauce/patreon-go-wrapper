@@ -8,12 +8,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestFetchCampaign(t *testing.T) {
+func TestFetchCampaigns(t *testing.T) {
 	setup()
 	defer teardown()
 
 	mux.HandleFunc("/api/oauth2/v2/campaigns", func(writer http.ResponseWriter, request *http.Request) {
-		fmt.Fprint(writer, fetchCampaignResp)
+		fmt.Fprint(writer, fetchCampaignsResp)
 	})
 
 	resp, err := client.FetchCampaigns()
@@ -24,7 +24,7 @@ func TestFetchCampaign(t *testing.T) {
 
 	require.Equal(t, 1, len(resp.Data))
 	require.Equal(t, "campaign", resp.Data[0].Type)
-	require.Equal(t, "8636299", resp.Data[0].ID)
+	require.Equal(t, "12324", resp.Data[0].ID)
 	require.Equal(t, "outstanding coding projects", resp.Data[0].Attributes.CreationName)
 
 	// Attributes
@@ -53,15 +53,51 @@ func TestFetchCampaign(t *testing.T) {
 	require.True(t, ok)
 	require.Equal(t, "2343242423", user.ID)
 	require.Equal(t, "user", user.Type)
-
-	tier, ok := resp.Included.Items[1].(*Tier)
-	require.True(t, ok)
-	require.Equal(t, "8606545", tier.ID)
-	require.Equal(t, "tier", tier.Type)
-
+	require.Equal(t, "austin@gmail.com", user.Attributes.Email)
 }
 
-const fetchCampaignResp = `
+func TestFetchCampaign(t *testing.T) {
+	setup()
+	defer teardown()
+
+	campaignID := "12324"
+
+	mux.HandleFunc(fmt.Sprintf("/api/oauth2/v2/campaigns/%s", campaignID), func(writer http.ResponseWriter, request *http.Request) {
+		fmt.Fprint(writer, fetchCampaignIncludeBenefitResp)
+	})
+
+	resp, err := client.FetchCampaign(campaignID)
+	if err != nil {
+		panic(err)
+	}
+	require.NoError(t, err)
+
+	require.Equal(t, "campaign", resp.Data.Type)
+	require.Equal(t, campaignID, resp.Data.ID)
+	require.Equal(t, "outstanding coding projects", resp.Data.Attributes.CreationName)
+
+	// Attributes
+
+	attrs := resp.Data.Attributes
+	require.NotEmpty(t, attrs.ImageSmallURL)
+	require.NotEmpty(t, attrs.ImageURL)
+	require.False(t, attrs.IsNsfw)
+	require.Equal(t, 123121, attrs.PatronCount)
+	require.Equal(t, "month", attrs.PayPerName)
+	require.NotEmpty(t, attrs.Summary)
+	require.NotEmpty(t, attrs.PledgeURL)
+	require.NotEmpty(t, attrs.ThanksMsg)
+
+	// Relationships
+
+	creator := resp.Data.Relationships.Creator
+	require.NotNil(t, creator)
+	require.Equal(t, "2343242423", creator.Data.ID)
+	require.Equal(t, "user", creator.Data.Type)
+	require.Equal(t, "https://www.patreon.com/api/oauth2/v2/user/2343242423", creator.Links.Related)
+}
+
+const fetchCampaignsResp = `
 {
     "data": [
       {
@@ -72,8 +108,8 @@ const fetchCampaignResp = `
           "google_analytics_id": null,
           "has_rss": false,
           "has_sent_rss_notify": false,
-          "image_small_url": "https://c10.patreonusercontent.com/4/patreon-media/p/campaign/8636299/1035867e95234da7b561610c47ca7ed4/eyJ3IjoxOTIwLCJ3ZSI6MX0%3D/1.jpg?token-time=1664841600&token-hash=OZAH1tyGDklRD4891PGP0ULGoSs3KeecPeqtMJC96qs%3D",
-          "image_url": "https://c10.patreonusercontent.com/4/patreon-media/p/campaign/8636299/1035867e95234da7b561610c47ca7ed4/eyJ3IjoxOTIwLCJ3ZSI6MX0%3D/1.jpg?token-time=1664841600&token-hash=OZAH1tyGDklRD4891PGP0ULGoSs3KeecPeqtMJC96qs%3D",
+          "image_small_url": "https://c10.patreonusercontent.com/4/patreon-media/p/campaign/12324/1035867e95234da7b561610c47ca7ed4/eyJ3IjoxOTIwLCJ3ZSI6MX0%3D/1.jpg?token-time=1664841600&token-hash=OZAH1tyGDklRD4891PGP0ULGoSs3KeecPeqtMJC96qs%3D",
+          "image_url": "https://c10.patreonusercontent.com/4/patreon-media/p/campaign/12324/1035867e95234da7b561610c47ca7ed4/eyJ3IjoxOTIwLCJ3ZSI6MX0%3D/1.jpg?token-time=1664841600&token-hash=OZAH1tyGDklRD4891PGP0ULGoSs3KeecPeqtMJC96qs%3D",
           "is_charged_immediately": false,
           "is_monthly": true,
           "is_nsfw": false,
@@ -91,7 +127,7 @@ const fetchCampaignResp = `
           "thanks_msg": "Thank you!",
           "thanks_video_url": null
         },
-        "id": "8636299",
+        "id": "12324",
         "relationships": {
           "benefits": {
             "data": [
@@ -122,7 +158,7 @@ const fetchCampaignResp = `
       }
     ],
     "included": [
-      { "attributes": {}, "id": "2343242423", "type": "user" },
+      { "attributes": {"email": "austin@gmail.com"}, "id": "2343242423", "type": "user" },
       { "attributes": {}, "id": "8606545", "type": "tier" },
       { "attributes": {}, "id": "8606546", "type": "tier" },
       { "attributes": {}, "id": "8606547", "type": "tier" },

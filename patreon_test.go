@@ -38,7 +38,7 @@ func TestBuildURL(t *testing.T) {
 	)
 
 	require.NoError(t, err)
-	require.Equal(t, "https://api.patreon.com/path?fields%5Bpledge%5D=total_historical_amount_cents%2Cunread_count&include=patron%2Creward%2Ccreator&page%5Bcount%5D=10&page%5Bcursor%5D=123", url)
+	require.Equal(t, "https://patreon.com/path?fields%5Bpledge%5D=total_historical_amount_cents%2Cunread_count&include=patron%2Creward%2Ccreator&page%5Bcount%5D=10&page%5Bcursor%5D=123", url)
 }
 
 func TestBuildURLWithInvalidPath(t *testing.T) {

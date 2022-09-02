@@ -11,13 +11,13 @@ func TestParseIncludes(t *testing.T) {
 	includes := Includes{}
 	err := json.Unmarshal([]byte(includesJson), &includes)
 	require.NoError(t, err)
-	require.Len(t, includes.Items, 4)
+	require.Len(t, includes.Items, 5)
 
 	user, ok := includes.Items[0].(*User)
 	require.True(t, ok)
 	require.Equal(t, "2822191", user.ID)
 	require.Equal(t, "user", user.Type)
-	require.Equal(t, "podsync", user.Attributes.Vanity)
+	require.Equal(t, "austinhub", user.Attributes.Vanity)
 
 	goal, ok := includes.Items[1].(*Goal)
 	require.True(t, ok)
@@ -29,7 +29,17 @@ func TestParseIncludes(t *testing.T) {
 	require.Equal(t, "12312321", campaign.ID)
 	require.Equal(t, "campaign", campaign.Type)
 
+	tier, ok := includes.Items[3].(*Tier)
 	require.True(t, ok)
+	require.Equal(t, "15161351", tier.ID)
+	require.Equal(t, "tier", tier.Type)
+	require.True(t, tier.Attributes.Published)
+
+	benefit, ok := includes.Items[4].(*Benefit)
+	require.True(t, ok)
+	require.Equal(t, "10456319", benefit.ID)
+	require.Equal(t, "benefit", benefit.Type)
+	require.Equal(t, "custom", benefit.Attributes.BenefitType)
 }
 
 func TestParseUnsupportedInclude(t *testing.T) {
@@ -43,7 +53,7 @@ const includesJson = `
 [
 	{
 		"attributes": {
-			"vanity": "podsync"
+			"vanity": "austinhub"
 		},
 		"id": "2822191",
 		"relationships": {},
@@ -63,12 +73,17 @@ const includesJson = `
 	},
 	{
 		"attributes": {
-			"amount_cents": 100,
-			"created_at": "2017-06-20T23:21:34.514822+00:00",
-			"declined_since": null,
-			"patron_pays_fees": true,
-			"pledge_cap_cents": 100
-		}
+		  "published": true
+		},
+		"id": "15161351",
+		"type": "tier"
+	},
+	{
+		"attributes": {
+		  "benefit_type": "custom"
+		},
+		"id": "10456319",
+		"type": "benefit"
 	}
 ]
 `
@@ -77,7 +92,7 @@ const unknownIncludeJson = `
 [
 	{
 		"attributes": {
-			"vanity": "podsync"
+			"vanity": "austinhub"
 		},
 		"id": "2822191",
 		"relationships": {},
