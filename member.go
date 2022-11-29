@@ -55,6 +55,20 @@ type MembersResponse struct {
 	Data     []Member `json:"data"`
 	Included Includes `json:"included"`
 	Links    struct {
-		Self string `json:"self"`
+		First string `json:"first"`
+		Last  string `json:"last"`
+		Next  string `json:"next"`
+		Prev  string `json:"prev"`
 	} `json:"links"`
+	Meta struct {
+		Pagination struct {
+			Cursors struct {
+				First string `json:"first"`
+				Last  string `json:"last"`
+				Next  string `json:"next"`
+				Prev  string `json:"prev"`
+			} `json:"cursors"`
+		} `json:"pagination"`
+		Count int `json:"count"`
+	} `json:"meta"`
 }
