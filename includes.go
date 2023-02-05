@@ -46,6 +46,8 @@ func (i *Includes) UnmarshalJSON(b []byte) error {
 			obj = &Benefit{}
 		} else if s.Type == "membership" {
 			obj = &Member{}
+		} else if s.Type == "member" {
+			obj = &Member{}
 		} else if s.Type == "address" {
 			obj = &Address{}
 		} else if s.Type == "patron" {
